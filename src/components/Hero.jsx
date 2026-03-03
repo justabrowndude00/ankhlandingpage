@@ -1,75 +1,9 @@
 import { motion } from 'framer-motion'
 
-/* Floating particles — more variety */
-function Particles() {
-    const particles = Array.from({ length: 15 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 6 + 2,
-        duration: Math.random() * 18 + 8,
-        delay: Math.random() * 10,
-        opacity: Math.random() * 0.5 + 0.1,
-        hue: Math.random() > 0.7 ? 200 : 220, // some teal, mostly blue
-    }))
-
-    return (
-        <div className="hero__particles" aria-hidden="true">
-            {particles.map((p) => (
-                <motion.div
-                    key={p.id}
-                    className="hero__particle"
-                    style={{
-                        left: `${p.x}%`,
-                        width: p.size,
-                        height: p.size,
-                        opacity: p.opacity,
-                        background: `hsl(${p.hue}, 80%, 65%)`,
-                        boxShadow: `0 0 ${p.size * 2}px hsla(${p.hue}, 80%, 65%, 0.4)`,
-                    }}
-                    animate={{
-                        y: [0, -900],
-                        x: [0, (Math.random() - 0.5) * 60],
-                        opacity: [0, p.opacity, p.opacity, 0],
-                        scale: [0.8, 1.2, 0.8],
-                    }}
-                    transition={{
-                        duration: p.duration,
-                        repeat: Infinity,
-                        delay: p.delay,
-                        ease: 'linear',
-                    }}
-                />
-            ))}
-        </div>
-    )
-}
 
 export default function Hero() {
     return (
         <section className="hero">
-            {/* Animated aurora mesh */}
-            <div className="hero__aurora" aria-hidden="true">
-                <div className="hero__aurora-blob hero__aurora-blob--1" />
-                <div className="hero__aurora-blob hero__aurora-blob--2" />
-                <div className="hero__aurora-blob hero__aurora-blob--3" />
-            </div>
-
-            {/* Dot grid pattern */}
-            <div className="hero__dot-grid" aria-hidden="true" />
-
-            {/* Floating particles */}
-            <Particles />
-
-            {/* Glow behind title */}
-            <div className="hero__glow" aria-hidden="true" />
-
-            {/* Light streaks */}
-            <div className="hero__streaks" aria-hidden="true">
-                <div className="hero__streak hero__streak--1" />
-                <div className="hero__streak hero__streak--2" />
-                <div className="hero__streak hero__streak--3" />
-            </div>
 
             {/* Centered content */}
             <div className="hero__content">

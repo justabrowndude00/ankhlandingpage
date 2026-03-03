@@ -16,11 +16,6 @@ export default function Navbar() {
     return (
         <nav className="navbar" style={scrolled ? { boxShadow: '0 8px 40px rgba(0,0,0,0.1)' } : {}}>
             <a href="#" className="navbar__logo">
-                <img
-                    src="/ankh-logo.svg"
-                    alt="Ankh logo"
-                    className="navbar__logo-img"
-                />
                 <span className="navbar__logo-text">Ankh</span>
             </a>
 
