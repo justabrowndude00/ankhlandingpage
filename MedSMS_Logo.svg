@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="220" height="50" viewBox="0 0 220 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Icon Part -->
+    <g transform="translate(0, 10)">
+        <!-- Left rounded rect -->
+        <rect x="0" y="0" width="18" height="30" rx="6" fill="black"/>
+        <!-- Right semicircle/shape -->
+        <path d="M22 0H35C43.2843 0 50 6.71573 50 15C50 23.2843 43.2843 30 35 30H22V0Z" fill="black"/>
+    </g>
+    
+    <!-- Text Part -->
+    <text x="60" y="36" font-family="Inter, sans-serif" font-weight="bold" font-size="32" letter-spacing="-1" fill="black">MedSMS</text>
+</svg>
