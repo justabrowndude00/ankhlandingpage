@@ -16,7 +16,12 @@ export default function Navbar() {
     return (
         <nav className="navbar" style={scrolled ? { boxShadow: '0 8px 40px rgba(0,0,0,0.1)' } : {}}>
             <a href="#" className="navbar__logo">
-                <span className="navbar__logo-text">Ankh</span>
+                <img
+                    src="/ankh-text-logo.svg"
+                    alt="Ankh logo"
+                    className="navbar__logo-img"
+                    style={{ height: '32px', width: 'auto' }}
+                />
             </a>
 
             {/* Desktop links */}
