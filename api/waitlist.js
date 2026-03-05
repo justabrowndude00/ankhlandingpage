@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv'
+import { neon } from '@neondatabase/serverless'
 
 export default async function handler(req, res) {
     // Only allow POST
@@ -23,36 +23,46 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Role must be "volunteer" or "user"' })
         }
 
-        // Create the record
-        const record = {
-            name: name.trim(),
-            email: email.trim().toLowerCase(),
-            role,
-            timestamp: new Date().toISOString(),
+        // Initialize Postgres connection
+        if (!process.env.DATABASE_URL) {
+            console.error('DATABASE_URL is missing. Please connect Neon in Vercel Storage.')
+            return res.status(500).json({ error: 'Database is not configured yet.' })
         }
 
-        // Store in Vercel KV
-        // Use a list to store all signups, and a set for dedup by email
-        const emailKey = `waitlist:email:${record.email}`
-        const existing = await kv.get(emailKey)
+        const sql = neon(process.env.DATABASE_URL)
 
-        if (existing) {
+        // Ensure table exists - creates one automatically on the first request!
+        await sql`
+            CREATE TABLE IF NOT EXISTS waitlist (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                role VARCHAR(50) NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            );
+        `
+
+        const cleanEmail = email.trim().toLowerCase()
+
+        // Check for duplicates
+        const existing = await sql`SELECT id FROM waitlist WHERE email = ${cleanEmail}`
+        if (existing.length > 0) {
             return res.status(409).json({ error: 'This email is already on the waitlist!' })
         }
 
-        // Store the record keyed by email
-        await kv.set(emailKey, JSON.stringify(record))
-
-        // Add to the list of all signups
-        await kv.lpush('waitlist:all', JSON.stringify(record))
-
-        // Increment counters
-        await kv.incr('waitlist:count:total')
-        await kv.incr(`waitlist:count:${role}`)
+        // Insert exactly like a standard SQL table
+        await sql`
+            INSERT INTO waitlist (name, email, role)
+            VALUES (${name.trim()}, ${cleanEmail}, ${role})
+        `
 
         return res.status(200).json({ success: true })
     } catch (error) {
         console.error('Waitlist API error:', error)
+        // Check for Postgres unique constraint violation
+        if (error.code === '23505') {
+            return res.status(409).json({ error: 'This email is already on the waitlist!' })
+        }
         return res.status(500).json({ error: 'Something went wrong. Please try again.' })
     }
 }
