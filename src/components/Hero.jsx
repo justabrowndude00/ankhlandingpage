@@ -52,7 +52,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                    <a href="#waitlist" className="btn-primary btn-glow">
+                    <a href="https://forms.gle/zTX49TzUk28S9Qj56" target="_blank" rel="noopener noreferrer" className="btn-primary btn-glow">
                         Join the Waitlist →
                     </a>
                     <a href="#mission" className="btn-secondary">
